@@ -1,4 +1,4 @@
-# PROCESS PLACEMENT
+    # PROCESS PLACEMENT
 ## Updates 01/08/2018
 _see man pages for more information_  
 https://slurm.schedmd.com/selectplugins.html
@@ -27,7 +27,10 @@ runs in read_config by slurmctld only for initialazing the node structures
 #### IMPORTANT-> extern int select_p_job_test :  
 the main function of selection, this function in called by slurmctld in
 node_scheduler.c by the function **_pick_best_nodes** and job_scheduler.c by
-the function **job_start_data**
+the function **job_start_data**  
+
+#### extern int cr_job_test :
+**does most of the real work for select_p_job_tes**
 
 #### extern bitstr_t * select_p_resv_test :
 Identify the nodes which best satisfy a reservation request taking system
@@ -36,3 +39,5 @@ topology into consideration if applicable.
 #### extern bitstr_t * select_p_step_pick_nodes :  
 Select the "best" nodes for given job step from those available in
 a job allocation.
+
+For development functions **init** and **fini** must also be checked.
