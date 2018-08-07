@@ -1,8 +1,8 @@
-    # PROCESS PLACEMENT
-## Updates 01/08/2018
+ # PROCESS PLACEMENT
+## Documentation on plugins and functions
 _see man pages for more information_  
 https://slurm.schedmd.com/selectplugins.html
-### cons_res:
+### cons_res plugin:
 plugin needs to be modified according to Topology-aware job mapping
 Most of the logic in the select plugin is dedicated to identifying resources to
 be allocated to a new job. Input to that function includes: a pointer to the new
@@ -30,7 +30,7 @@ node_scheduler.c by the function **_pick_best_nodes** and job_scheduler.c by
 the function **job_start_data**  
 
 #### extern int cr_job_test :
-**does most of the real work for select_p_job_tes**
+does most of the real work for select_p_job_test
 
 #### extern bitstr_t * select_p_resv_test :
 Identify the nodes which best satisfy a reservation request taking system
