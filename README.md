@@ -1,5 +1,5 @@
- # PROCESS PLACEMENT
-## Documentation on plugins and functions
+# PROCESS PLACEMENT
+## Documentation on plugins and functions required for process placement
 _see man pages for more information_  
 https://slurm.schedmd.com/selectplugins.html
 ### cons_res plugin:
@@ -29,8 +29,15 @@ the main function of selection, this function in called by slurmctld in
 node_scheduler.c by the function **_pick_best_nodes** and job_scheduler.c by
 the function **job_start_data**  
 
-#### extern int cr_job_test :
-does most of the real work for select_p_job_test
+#### IMPORTANT-> extern int cr_job_test_ :
+does most of the real work for select_p_job_test, is called by slurmctld in
+src/select/cons_res/job_test.c. This is the function with the 4 steps described
+in select_p_job_test.
+- #### The steps of cr_job_test :
+1. _select_nodes_ function to be investigated - what exactly is a partition?
+when is it determined?
+2.
+
 
 #### extern bitstr_t * select_p_resv_test :
 Identify the nodes which best satisfy a reservation request taking system
@@ -41,3 +48,8 @@ Select the "best" nodes for given job step from those available in
 a job allocation.
 
 For development functions **init** and **fini** must also be checked.
+
+#### Select_nodes function called in cr_job_test:
+Functions called by _select_nodes_ function:
+- _can_run_job_on_node_ 
+
