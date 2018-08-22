@@ -28,7 +28,38 @@ runs in read_config by slurmctld only for initialazing the node structures
 the main function of selection, this function in called by slurmctld in
 node_scheduler.c by the function **_pick_best_nodes** and job_scheduler.c by
 the function **job_start_data**  
-
+ 
+    /* now that we know that this job can run with the given resources,
+	 * let's factor in the existing allocations and seek the optimal set
+	 * of resources for this job. Here is the procedure:
+	 *
+	 * Step 1: Seek idle CPUs across all partitions. If successful then
+	 *         place job and exit. If not successful, then continue. Two
+	 *         related items to note:
+	 *          1. Jobs that don't share CPUs finish with step 1.
+	 *          2. The remaining steps assume sharing or preemption.
+	 *
+	 * Step 2: Remove resources that are in use by higher-priority
+	 *         partitions, and test that job can still succeed. If not
+	 *         then exit.
+	 *
+	 * Step 3: Seek idle nodes among the partitions with the same
+	 *         priority as the job's partition. If successful then
+	 *         goto Step 6. If not then continue:
+	 *
+	 * Step 4: Seek placement within the job's partition. Search
+	 *         row-by-row. If no placement if found, then exit. If a row
+	 *         is found, then continue:
+	 *
+	 * Step 5: Place job and exit. FIXME! Here is where we need a
+	 *         placement algorithm that recognizes existing job
+	 *         boundaries and tries to "overlap jobs" as efficiently
+	 *         as possible.
+	 *
+	 * Step 6: Place job and exit. FIXME! here is we use a placement
+	 *         algorithm similar to Step 5 on jobs from lower-priority
+	 *         partitions.
+	 */
 #### IMPORTANT-> extern int cr_job_test_ :
 does most of the real work for select_p_job_test, is called by slurmctld in
 src/select/cons_res/job_test.c. This is the function with the 4 steps described
@@ -36,7 +67,6 @@ in select_p_job_test.
 - #### The steps of cr_job_test :
 1. _select_nodes_ function to be investigated - what exactly is a partition?
 when is it determined?
-2.
 
 
 #### extern bitstr_t * select_p_resv_test :
@@ -51,5 +81,6 @@ For development functions **init** and **fini** must also be checked.
 
 #### Select_nodes function called in cr_job_test:
 Functions called by _select_nodes_ function:
-- _can_run_job_on_node_ 
+- _get_res_usage
+- _can_job_run_on_node 
 
